@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "850907877596",
+    "project_id": "authentication-ebb72",
+    "storage_bucket": "authentication-ebb72.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:850907877596:android:9dc271d3557e5f009de419",
+        "android_client_info": {
+          "package_name": "com.todoapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCb1VqhHMTPLtj_CKCG-o-SEq3Ls_oPDhw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
