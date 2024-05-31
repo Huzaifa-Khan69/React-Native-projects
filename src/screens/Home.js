@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Text,
   View,
+  Alert,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
@@ -17,7 +18,7 @@ import ShowTask from '../components/ShowTask';
 const Home = ({navigation}) => {
   const [allData, setallData] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [taskStatus,setTaskStatus] = useState()
+  const [taskStatus, setTaskStatus] = useState();
 
   const {data} = useSelector(store => store.Data.auth);
 
@@ -29,7 +30,15 @@ const Home = ({navigation}) => {
     navigation.navigate('Edit');
   };
   const logout = () => {
-    dispatch(Logout());
+    Alert.alert("Logout",'Are you Sure',[
+      {
+        text: 'Cancel',
+        onPress: () => navigation.navigate("Home"),
+        style: 'cancel',
+      },
+      {text: 'OK', onPress: () =>dispatch(Logout())},
+    ]);
+    
   };
   const getAllData = () => {
     try {
@@ -39,10 +48,6 @@ const Home = ({navigation}) => {
         // .where('status','==','Incompleted')
         // .orderBy('dateandtime')
         .onSnapshot(querySnapshot => {
-          console.log(
-            '=========================>>       ',
-            querySnapshot?.empty,
-          );
           if (!querySnapshot?.empty) {
             setallData(querySnapshot?.docs);
           } else {
@@ -58,19 +63,18 @@ const Home = ({navigation}) => {
     getAllData();
   }, []);
 
-  const openModal = (taskId,status) => {
+  const openModal = (taskId, status) => {
     setIsOpen(true);
-    setTaskStatus(status)
+    if (status === 'Completed') {
+      setTaskStatus('Incompleted');
+      console.log(taskStatus);
+    } else {
+      setTaskStatus('Completed');
+    }
     setId(taskId);
   };
 
   const updateStatus = id => {
-    if (taskStatus==="Completed"){
-      setTaskStatus("Incompleted")
-    }
-    else{
-      setTaskStatus("Completed")
-    }
     firestore()
       .collection('Tasks')
       .doc(id)
@@ -94,7 +98,7 @@ const Home = ({navigation}) => {
   };
 
   return (
-    <ScrollView style={{backgroundColor: 'lightyellow'}}>
+    <ScrollView contentContainerStyle={{flexGrow:1,backgroundColor: 'lightyellow'}}>
       <View
         style={{
           flexDirection: 'row',
@@ -147,14 +151,26 @@ const Home = ({navigation}) => {
               elevation: 8,
               shadowColor: 'black',
             }}>
-            <Button
-              text={'Mark as Complete'}
-              buttonstyle={{
-                marginBottom: 30,
-                backgroundColor: 'lightblue',
-              }}
-              onPress={() => updateStatus(id)}
-            />
+            {taskStatus === 'Completed' ? (
+              <Button
+                text={'Mark as Complete'}
+                buttonstyle={{
+                  marginBottom: 30,
+                  backgroundColor: 'lightblue',
+                }}
+                onPress={() => updateStatus(id)}
+              />
+            ) : (
+              <Button
+                text={'Mark as Incomplete'}
+                buttonstyle={{
+                  marginBottom: 30,
+                  backgroundColor: 'lightblue',
+                }}
+                onPress={() => updateStatus(id)}
+              />
+            )}
+
             <Button
               text={'Delete Task'}
               buttonstyle={{backgroundColor: 'lightblue'}}
@@ -178,7 +194,7 @@ const Home = ({navigation}) => {
           <ShowTask
             key={item.id}
             id={item.id}
-            onPress={() => openModal(item.id,item._data.status)}
+            onPress={() => openModal(item.id, item._data.status)}
             title={item._data.title}
             description={item._data.description}
             dateandtime={item._data.dateandtime}
@@ -197,11 +213,11 @@ const Home = ({navigation}) => {
         Complete Task
       </Text>
       {allData.map(item => {
-        return item._data.status=== 'Completed' ? (
+        return item._data.status === 'Completed' ? (
           <ShowTask
-          key={item.id}
+            key={item.id}
             id={item.id}
-            onPress={() => openModal(item.id,item._data.status)}
+            onPress={() => openModal(item.id, item._data.status)}
             title={item._data.title}
             description={item._data.description}
             dateandtime={item._data.dateandtime}

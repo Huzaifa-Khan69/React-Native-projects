@@ -28,7 +28,7 @@ const Login = ({navigation}) => {
       });
   };
   return (
-    <ScrollView style={{flex: 1, backgroundColor: 'lightyellow'}}>
+    <ScrollView contentContainerStyle={{flexGrow: 1, backgroundColor: 'lightyellow'}}>
       <View
         style={{
           marginTop: 100,

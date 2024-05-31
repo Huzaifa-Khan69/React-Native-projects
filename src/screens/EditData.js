@@ -46,8 +46,8 @@ const EditData = ({navigation}) => {
 
   return (
     <ScrollView
-      style={{
-        flex: 1,
+      contentContainerStyle={{
+        flexGrow: 1,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'lightyellow',

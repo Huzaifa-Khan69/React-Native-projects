@@ -40,8 +40,8 @@ const Form = ({navigation}) => {
 
   return (
     <ScrollView
-      style={{
-        flex: 1,
+      contentContainerStyle={{
+        flexGrow: 1,
         backgroundColor: 'lightyellow',
         alignItems: 'center',
         justifyContent: 'center',
